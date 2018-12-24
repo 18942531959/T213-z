@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zking.ssm.mapper.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.zking.ssm.model.Order" >
+    <constructor >
+      <idArg column="order_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="order_no" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="cid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <resultMap id="many2one" type="com.zking.ssm.model.Order">
+    <id column="order_id" property="orderId"/>
+    <result column="order_no" property="orderNo"/>
+    <result column="cid" property="cid"/>
+
+    <!-- 多对一的关系 -->
+    <!-- property: 指的是属性的值, javaType：指的是属性的类型-->
+    <association property="customer" javaType="com.zking.ssm.model.Customer">
+      <id column="customer_id" property="customerId"/>
+      <result column="customer_name" property="customerName"/>
+    </association>
+  </resultMap>
+    <select id="querySingeOrder" resultMap="many2one">
+        select * from t_customer c,t_order o where c.customer_id=o.cid and o.order_id=#{orderId}
+    </select>
+
+</mapper>
